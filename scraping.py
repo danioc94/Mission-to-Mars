@@ -15,6 +15,7 @@ def scrape_all():
 
     # Run all scraping functions and store results in a dictionary
     data = {
+        "hemispheres" : scrape_hemispheres(browser),
         "news_title": news_title,
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
@@ -96,6 +97,34 @@ def mars_facts():
 
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
+
+def scrape_hemispheres(browser):
+    url = 'https://marshemispheres.com/'
+
+    browser.visit(url)
+    # 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+    html = browser.html
+    img_soup = soup(html, 'html.parser')
+    hemispheres = img_soup.find_all('div', class_='item')
+
+    hemispheres
+    hemisphere = dict()
+
+    for i in range(len(hemispheres)):
+        executable_path = {'executable_path': ChromeDriverManager().install()}
+        browser = Browser('chrome', **executable_path, headless=False)
+        url = "https://marshemispheres.com/" + (hemispheres[i].a["href"])
+        print("my url:", url)
+        browser.visit(url)
+        img = browser.find_by_text('Sample')
+        img = img['href']
+        title = browser.find_by_tag('h2')
+        title = title.text
+        hemisphere = {'title': title, "img_url":img}
+        hemisphere_image_urls.append(hemisphere)
+    
+    return hemisphere_image_urls
 
 if __name__ == "__main__":
 
